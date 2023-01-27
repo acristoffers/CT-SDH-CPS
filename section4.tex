@@ -1,27 +1,77 @@
 % !TeX root = document.tex
 % !TeX encoding = UTF-8 Unicode
 
-\section{Final Considerations}%
-\label{sec:conclusion}
+\subsection{Results}%
+\label{subsec:ts-results}
 
-\subsection{Final Considerations}%
-\label{subsec:conclusion}
-
-\begin{slide}{Final Considerations}
-  \begin{itemize}
-    \item The formulation is straightforward, optimization based and extendable.
-    \item The example was a simple system for didactic reasons, but this kind of
-          observer is better suited for large, sparse systems.
-  \end{itemize}
+\begin{slide}{Observer}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      \begin{align}
+        A              & = \begin{bmatrix}
+                             -1 & 1  & 0     & 0  & 0  \\
+                             -1 & -1 & 1.495 & 0  & 0  \\
+                             0  & 0  & -2    & 1  & 0  \\
+                             0  & 0  & 0     & -3 & 1  \\
+                             0  & 0  & 0     & 0  & -5
+                           \end{bmatrix},        \\
+        B              & =\begin{bmatrix}
+                            0 \\ 0 \\ 0 \\ 0 \\ 16
+                          \end{bmatrix},
+        C = \begin{bmatrix}
+              -5.517 \\ 2.759 \\ 0 \\ 0 \\ 0
+            \end{bmatrix}^{\top},
+        D = 0                                               \\
+        \textrm{poles} & = \{-1\pm{}1\imath{}, -2, -3, -5\}
+      \end{align}
+    \end{column}%
+    \hfill%
+    \begin{column}{0.55\textwidth}
+      \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=\linewidth]{stair-input-u}
+        \caption{Control Signal.}%
+      \end{figure}
+    \end{column}%
+  \end{columns}
 \end{slide}
 
-\subsection{Future Works Perspective}%
-\label{subsec:future-works}
+\begin{slide}{Observer}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=\linewidth]{stair-input}
+        \caption{Observed and system's states.}%
+      \end{figure}
+    \end{column}%
+    \hfill%
+    \begin{column}{0.55\textwidth}
+      \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=\linewidth]{stair-input-error}
+        \caption{Estimation error.}%
+      \end{figure}
+    \end{column}%
+  \end{columns}
+\end{slide}
 
-\begin{slide}{Future Works Perspective}
-  \begin{itemize}
-    \item Extend to detect Dynamic False Data Injection attacks.
-    \item Discrete-time version.
-    \item Use with other techniques to detect other types of attacks.
-  \end{itemize}
+\begin{slide}{Results}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=\linewidth]{ts-system}
+        \caption{Time-scale system's observer with \(\mu=\SI{1}{\second}\).}%
+      \end{figure}
+    \end{column}%
+    \hfill%
+    \begin{column}{0.55\textwidth}
+      \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=\linewidth]{ts-system2}
+        \caption{Time-scale system's observer with \(\mu=\SI{0.75}{\second}\).}%
+      \end{figure}
+    \end{column}%
+  \end{columns}
 \end{slide}

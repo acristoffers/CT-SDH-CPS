@@ -4,52 +4,84 @@
 
 \documentclass[ieee,english]{slides}
 
+\usepackage{mathtools}
+
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\cmark}{\ding{51}}%
-\newcommand{\xmark}{\ding{55}}%
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+\newcommand{\adj}{\textrm{adj}}
+\newcommand{\tr}{^{\top}}
+\renewcommand{\bar}[1]{\overline{#1}}
+\newcommand{\ubar}[1]{\underline{#1}}
 
-\title{False Data Injection Detection in Cyber-Physical System}
+\title{Zero-Dynamics attack detection with Time-Scale Observer}
 
 \addauthor{Álan Crístoffer e Sousa}{alan.e-sousa@univ-reims.fr}
 
-\setorientador{Prof.\ Dr.\ Nadhir Messai}
+\setorientador{Dr.\ Nadhir Messai}
 \addcoorientador{Prof.\ Dr.\ Noureddine Manamanni}
 
 \setdepartamento{CReSTIC}
 \seteixodeformacao{Automation and Signal Processing}
 
 \setlocal{Reims}
-\setano{2022}
-\setmes{June}
+\setano{2023}
+\setmes{February}
 
 \preamble{}
+\input{colors}
 
 \addbibresource{bibliothek.bib}
 \graphicspath{{imgs/}}%
+
+\newcommand{\y}{\textcolor{flame}{\ensuremath{y(t)}}}
+\newcommand{\z}{\textcolor{red}{\ensuremath{z(t)}}}
+\newcommand{\w}{\textcolor{auburn}{\ensuremath{w(t)}}}
+\newcommand{\hz}{\textcolor{red}{\ensuremath{\hat{z}(t)}}}
+\newcommand{\dw}{\textcolor{auburn}{\ensuremath{\dot{w}(t)}}}
+\newcommand{\mN}{\textcolor{frenchblue}{\ensuremath{N}}}
+\newcommand{\mJ}{\textcolor{frenchblue}{\ensuremath{J}}}
+\newcommand{\mH}{\textcolor{frenchblue}{\ensuremath{H}}}
+\newcommand{\mE}{\textcolor{frenchblue}{\ensuremath{E}}}
+
+\newcommand{\cubar}[1]{\textcolor{frenchblue}{\ubar{#1}}}
+\newcommand{\cbar}[1]{\textcolor{flame}{\bar{#1}}}
+\newcommand{\abs}[1]{\left\lVert#1\right\rVert}
 
 \begin{document}
 \maketitle{}
 
 \begin{slide}{Index}
-  \begin{minipage}[t][0.6\textheight][t]{0.5\textwidth}
-    \tableofcontents[sections={1-3}]
+  \begin{minipage}[t][0.4\textheight][t]{0.45\textwidth}
+    \tableofcontents[sections={1-4}]
   \end{minipage}
-  \begin{minipage}[t][4\baselineskip][t]{0.5\textwidth}
-    \tableofcontents[sections={4-}]
+  \begin{minipage}[t][0.4\baselineskip][t]{0.45\textwidth}
+    \tableofcontents[sections={5-}]
   \end{minipage}
   \vfill\null{}
 \end{slide}
+
+\input{section0}
 
 \input{section1}
 \input{section2}
 \input{section3}
 \input{section4}
+\input{section5}
 
-% \begin{frame}[allowframebreaks]{Referências}
-%   \nocite{*}
-%   \printbibliography{}
-% \end{frame}
+\begin{slide}{}
+  \usebeamercolor{frametitle}
+  \vspace*{\fill}
+  \begin{center}
+    \textcolor{fg}{\Large{Merci pour votre attention.}}
+  \end{center}
+  \vspace*{\fill}
+\end{slide}
 
+\begin{slide}[allowframebreaks]{Referências}
+  \nocite{*}
+  \printbibliography{}
+\end{slide}
 \end{document}

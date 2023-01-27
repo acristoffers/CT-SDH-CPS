@@ -1,199 +1,106 @@
 % !TeX root = document.tex
 % !TeX encoding = UTF-8 Unicode
 
-\section{Observer Design}%
-\label{sec:observer-design}
+\section{Time-Scale Systems}%
+\label{sec:ts-systems}
 
-\subsection{Bank of Observers}%
-\label{subsec:bank-of-observers}
+\subsection{Time Scale Calculus}%
+\label{subsec:ts-calculus}
 
-\begin{slide}{Bank of Observers}
-  \input{imgs/schematic}
-\end{slide}
-
-\subsection{Observer Design}%
-\label{subsec:observer-design}
-
-\begin{slide}{Observer Design}
+\begin{slide}{Time-Scale Calculus}
   \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
+    \begin{column}{0.48\textwidth}
+      \begin{itemize}
+        \item Unifies the continuous- and discrete-time calculi.
+        \item Uses the so-called delta-derivative (\(\Delta\)-derivative).
+        \item Exists for different time-sets, not only the continuous and
+              discrete case.
+      \end{itemize}
+      \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=0.6\linewidth]{ts-jump}
+        \caption{Time-Scale jump operators. Source: \url{https://shorturl.at/bcJY1}}%
+      \end{figure}
+    \end{column}%
+    \hfill%
+    \begin{column}{0.48\textwidth}
       \begin{equation}
-        \begin{aligned}
-          \textrm{arg min } & \norm{P}_{2}    \\
-          \textrm{s.t. }    & \dot{V} \prec 0 \\
-                            & P \succ 0,
-        \end{aligned}
+        \mathbb{T} = h\mathbb{Z} | \mathbb{R} | \mathbb{T}_{\textrm{iso}}
       \end{equation}
       %
-      where
-      %
       \begin{align}
-        \dot{V} \equiv & \begin{bmatrix}
-                           X        & W  \\
-                           W^{\top} & -I
-                         \end{bmatrix},                                         \\
-        \lambda\in     & \mathbb{R}^{+} \textrm{ is a free constant}, \nonumber \\
-        P              & \textrm{ is a semidefinite positve matrix} \nonumber
+        \textrm{forward:~}  & \sigma(t) = \inf\{\tau\in\mathbb{T}|\tau>t\}, \\
+        \textrm{backward:~} & \rho(t) = \sup\{\tau\in\mathbb{T}|\tau<t\}.
       \end{align}
       %
-      with
+      \begin{equation}
+        \mu(t) = \sigma(t)-t \leftarrow \textrm{graininess}
+      \end{equation}
       %
-      \begin{align}
-        \begin{split}
-          X = & \hat{A}^{\top}F^{\top}P - \hat{A}^{\top}C^{\top}\hat{E}^{\top} -                 \\
-          & \hat{C}^{\top}\hat{K}^{\top} + PF\hat{A} - \hat{E}C\hat{A} - \hat{K}\hat{C} - \lambda{}I,
-        \end{split} \\
-        W = & \sqrt{\lambda}(PF - \hat{E}C).
-      \end{align}
+      \begin{equation}
+        f(\sigma(t)) = f(t) + \mu(t)f^{\Delta}(t).
+      \end{equation}
+    \end{column}%
+  \end{columns}
+\end{slide}
+
+\begin{slide}{Time-Scale System}
+  \begin{columns}[c]
+    \begin{column}{0.48\textwidth}
+      \begin{itemize}
+        \item Allows to evolve the system with arbitrary sampling-times.
+        \item Has it own stability criteria based on the Hilger's circle.
+      \end{itemize}
     \end{column}%
     \hfill%
-    \begin{column}{0.55\textwidth}
+    \begin{column}{0.48\textwidth}
       \begin{align}
-        \begin{split}
-          \hat{A} & = AF^{+},              \\
-          \hat{C} & = CF^{+},              \\
-          \hat{E} & = PE = PU + \hat{Y}V,  \\
-          \hat{K} & = PK,                  \\
-          \hat{Y} & = PY.
-        \end{split} \\\nonumber\\
-        \begin{split}
-          K & = P^{-1}\hat{K},  \\
-          Y & = P^{-1}\hat{Y},  \\
-          E & = U + YV,         \\
-          R & = F - EC,         \\
-          N & = (RA - KC)F^{+}, \\
-          J & = K + NE,         \\
-          H & = RB.
-        \end{split}
+        x^{\Delta}(t) & = A(\mu(t))x(t) + B(\mu(t))u(t),                      \\
+        y(t)          & = Cx(t) + Du(t),                                      \\
+        \phantom{1}   & \phantom{1}                                 \nonumber \\
+        A(\mu(t))     & = \frac{e^{A\mu(t)}-I}{\mu(t)},                       \\
+        B(\mu(t))     & = \int_{0}^{\mu(t)}\frac{e^{(\mu(t)-s)A}}{\mu(t)}Bds.
       \end{align}
     \end{column}%
   \end{columns}
 \end{slide}
 
-\begin{slide}{Observer Design Development}
+\begin{slide}{Stability Criteria}
   \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
-      \begin{align}
-        \begin{split}
-          e & = \hat{z} - z   \\
-          & = w + Ey - Fx   \\
-          & = w + ECx - Fx.
-        \end{split} \\
-        \begin{split}
-          \dot{e} & = \dot{w} + (EC-F)\dot{x}              \\
-          & = Nw + Jy + Hu + (EC-F)(Ax + Bu + Lf)  \\
-          & = Ne + (NF-NEC+ECA-FA+JC)x +           \\
-          & \phantom{=~} (H+ECB-FB)u + (ECL-FL)f.
-        \end{split}
-      \end{align}
+    \begin{column}{0.48\textwidth}
+      The system is stable if all of it's poles are within the Hilger's circle,
+      defined as a the circle centered at \((-\frac{1}{\mu}, 0)\) and with
+      radius \(\frac{1}{\mu}\).
+
+      Note that the circle changes with the sampling-time (\(\mu\)).
+
+      \begin{equation}
+        \mathcal{H}_{\mu} \coloneqq \left\{ z \in \mathbb{C} : \abs{z + \frac{1}{\mu}} < \frac{1}{\mu} \right\}
+      \end{equation}
     \end{column}%
     \hfill%
-    \begin{column}{0.55\textwidth}
-      \begin{align}
-        \begin{split}
-          N \textrm{ must be Hurwitz-stable}, &      \\
-          N(F-EC)-(F-EC)A+JC                  & = 0, \\
-          H-(F-EC)B                           & = 0.
-        \end{split} \\\nonumber\\
-        \begin{split}
-          (F-EC)L_{i} & = 0,     \\
-          (F-EC)L_{n} & \neq 0.
-        \end{split}
-      \end{align}
-    \end{column}%
-  \end{columns}
-\end{slide}
+    \begin{column}{0.48\textwidth}
+      \begin{figure}[ht!]
+        \centering
+        \resizebox{\linewidth}{!}{%
+          \begin{tikzpicture}
+            \fill [blue!40!white]           (0, 0) rectangle (1, 2);
+            \draw [step=1cm,gray,very thin] (0, 0) grid      (2, 2);
+            \node at (1, -0.25) {\(\dot{x}=f(x)\)};
 
-\begin{slide}{Observer Design Development}
-  \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
-      \begin{align}
-        V             & = e^{\top}Pe,          \\
-        \dot{e}       & = Ne-(F-EC)L_{n}f,     \\
-        e             & \propto L_{n}f,        \\
-        \norm{L_{n}f} & = \lambda{}\norm{e},   \\
-        R             & = F-EC,                \\
-        \dot{e}       & = Ne-R\lambda\norm{e}.
-      \end{align}
-    \end{column}%
-    \hfill%
-    \begin{column}{0.55\textwidth}
-      \begin{align}
-        \begin{split}
-          \dot{V} & = \dot{e}^{\top}Pe + e^{\top}P\dot{e}                                     \\
-          & = (Ne-\lambda{}R\norm{e})^{\top}Pe + e^{\top}P(Ne-\lambda{}R\norm{e})     \\
-          & = e^{T}(N^{\top}P + PN)e - 2\lambda\norm{e^{\top}PR}\cdot\norm{e}         \\
-          & \leq e^{T}(N^{\top}P + PN)e - \lambda(\norm{e^{\top}PR}^{2}+\norm{e}^{2}) \\
-          & = e^{T}(N^{\top}P + PN - \lambda{}PRR^{\top}P - \lambda{}I)e.
-        \end{split}
-      \end{align}
-    \end{column}%
-  \end{columns}
-\end{slide}
+            \fill [blue!40!white]           (3.5, 1) circle (0.5);
+            \draw [step=1cm,gray,very thin] (3, 0)   grid   (5, 2);
+            \node at (4, -0.25) {\(\Delta{}x=f(x)\)};
 
-\begin{slide}{Observer Design Development}
-  \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
-      \begin{align}
-        \begin{split}
-          N(F-EC) & = RA-JC,                               \\
-          NF      & = RA-(J-NE)C,                          \\
-          K       & = J-NE,                                \\
-          N       & = RAF^{+}-KCF^{+},
-        \end{split} \\
-        \begin{split}
-          (F-EC)L_{i} & = 0,                                              \\
-          ECL_{i}     & = FL_{i},                                         \\
-          E           & = FL_{i}(CL_{i})^{+} + Y(I-(CL_{i})(CL_{i})^{+}), \\
-          U           & = ECL_{i}L_{i}^{+},                               \\
-          V           & = I-L_{i}L_{i}^{+},                               \\
-          E           & = U+YV.
-        \end{split}
-      \end{align}
-    \end{column}%
-    \hfill%
-    \begin{column}{0.55\textwidth}
-      \begin{align}
-        \begin{split}
-          \dot{V} & = e^{T}((R\hat{A} - EC\hat{A} - K\hat{C})^{\top}P +                                         \\
-          & P(R\hat{A} - EC\hat{A} - K\hat{C}) - \lambda{}PRR^{\top}P - \lambda{}I)e.                   \\
-          & = \hat{A}^{\top}F^{\top}P - \hat{A}^{\top}C^{\top}\hat{E}^{\top} - \hat{C}^{\top}K^{\top} + \\
-          & PF\hat{A} - \hat{E}C\hat{A} - K\hat{C} - \lambda{}PRR^{\top}P - \lambda{}I.
-        \end{split}
-      \end{align}
-    \end{column}%
-  \end{columns}
-\end{slide}
-
-\subsection{Residual Generator}%
-\label{subsec:residual-generator}
-
-\begin{slide}{Residual Generator}
-  \begin{columns}[c]
-    \begin{column}{0.55\textwidth}
-      \begin{align}
-        r(t) & = Gw(t) + My(t), \\
-        \begin{split}
-          M & = (C(1-L_{i}))^{\top},      \\
-          G & = -M(I-CF^{+}E)^{-1}CF^{+},
-        \end{split}
-      \end{align}
-    \end{column}%
-    \hfill%
-    \begin{column}{0.55\textwidth}
-      \begin{align}
-        \begin{split}
-          r & = Gw + My                                     \\
-            & = Q(y - Cx)                                   \\
-            & = Q(y - CF^{-1}\hat{z})                       \\
-            & = Q(y - CF^{-1}(w+Ey))                        \\
-            & = Q((I-CF^{-1}E)y - CF^{-1}w),
-        \end{split} \\
-        \begin{split}
-          M & = Q(I-CF^{-1}E),                              \\
-          G & = -QCF^{-1}.
-        \end{split}
-      \end{align}
+            \fill [orange!40!white]         (6.5, 1) circle (0.5);
+            \fill [blue!40!white]           (6.6, 1) circle (0.4);
+            \fill [green!40!white]          (6.7, 1) circle (0.3);
+            \draw [step=1cm,gray,very thin] (6, 0)   grid   (8, 2);
+            \node at (7, -0.25) {\(x^{\Delta{}}=f(x)\)};
+          \end{tikzpicture}%
+        }
+        \caption{Different stability regions}%
+      \end{figure}
     \end{column}%
   \end{columns}
 \end{slide}

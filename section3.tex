@@ -1,30 +1,157 @@
 % !TeX root = document.tex
 % !TeX encoding = UTF-8 Unicode
 
-\section{Results}%
-\label{sec:results}
+\subsection{Observer Synthesis}%
+\label{subsec:ts-observer-synthesis}
 
-\subsection{Robot Arm}%
-\label{subsec:robot-arm}
-
-\begin{slide}{Results}
+\begin{slide}{Observer Synthesis}
   \begin{columns}[c]
     \begin{column}{0.55\textwidth}
-      \begin{figure}[ht!]
-        \centering
-        \includegraphics[width=0.9\linewidth]{s7a2}
-        \caption{Residuals for attack on sensor 7, with \(\delta=1\).}%
-        \label{fig:s7a2}
-      \end{figure}
+      \begin{itemize}
+        \item Taking into consideration Hypothesis~\ref{item:hypo1}
+      \end{itemize}
+      \begin{align}
+        x^{\Delta} & = Ax + Bu, \\
+        y          & = Cx,
+      \end{align}
+      %
+      \begin{gather}
+        V = x\tr{}Px
+      \end{gather}
+      %
+      \begin{gather}
+        x(\sigma(t)) = x(t) + \mu(t)x^{\Delta}(t).
+      \end{gather}
+      %
+      \begin{gather}
+        PA + A\tr{}P + \mu{}A\tr{}PA \prec{} 0 \\
+        P \succ{} 0
+      \end{gather}
     \end{column}%
     \hfill%
     \begin{column}{0.55\textwidth}
-      \begin{figure}[ht!]
-        \centering
-        \includegraphics[width=0.9\linewidth]{s8a1}
-        \caption{Residuals for attack on sensor 8, copying the values from sensor 9.}%
-        \label{fig:s8a1}
-      \end{figure}
+      \begin{equation}
+        x^{\Delta} = Ax + Bu + L(y - Cx).
+      \end{equation}
+      %
+      \begin{gather}
+        \begin{bmatrix}
+          M     & (PA - ZC)  \\
+          \star & -\mu^{-1}P
+        \end{bmatrix} \prec{} 0,  \\
+        M = PA + A\tr{}P - ZC - C\tr{}Z\tr{}.
+      \end{gather}
+      %
+      \begin{equation}
+        Z = PL.
+      \end{equation}
+    \end{column}%
+  \end{columns}
+\end{slide}
+
+\begin{slide}{LPV Observer}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      The time-scale system is nonlinear and parameter-varying since it's \(A\)
+      matrix is
+      %
+      \begin{equation}
+        A(\mu(t)) = \frac{e^{A\mu(t)}-I}{\mu(t)},
+      \end{equation}
+      %
+      which allows the application of sector-decomposition.
+    \end{column}%
+    \hfill%
+    \begin{column}{0.55\textwidth}
+      For a non-linear function \(f(\rho):\mathbb{R}\rightarrow\mathbb{R}\), given
+      \(\rho\in[\ubar{\rho}, \bar{\rho}]\), then
+      %
+      \begin{equation}
+        f(\rho) = \alpha_{1}(\rho)\ubar{f} + \alpha_{2}(\rho)\bar{f}
+      \end{equation}
+      %
+      if
+      %
+      \begin{align}
+        \bar{f}          & = \sup{f(\rho)},                             \\
+        \ubar{f}         & = \inf{f(\rho)},                             \\
+        \nonumber                                                       \\
+        \alpha_{1}(\rho) & = \frac{\bar{f}-f(\rho)}{\bar{f}-\ubar{f}},  \\
+        \alpha_{2}(\rho) & = \frac{f(\rho)-\ubar{f}}{\bar{f}-\ubar{f}}.
+      \end{align}
+    \end{column}%
+  \end{columns}
+\end{slide}
+
+\begin{slide}{Convexity and Majorization}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      Taking into consideration Hypothesis \ref{item:hypo2}, \ref{item:hypo3}
+      and \ref{item:hypo4}!
+      %
+      \begin{equation}
+        f(\sum_{i}\alpha_{i}x_{i}) \preceq \sum_{i}\alpha_{i}f(x_{i}),
+      \end{equation}
+    \end{column}%
+    \hfill%
+    \begin{column}{0.55\textwidth}
+      \begin{itemize}
+        \item Convexity is not globally defined for complex numbers;
+        \item Convexity is not globally defined for matrices;
+      \end{itemize}
+    \end{column}%
+  \end{columns}
+\end{slide}
+
+\begin{slide}{LMI for the LPV Case}
+  \begin{equation}
+    V = \begin{bmatrix}
+      M(\sum_{i=0}^{1}\gamma_{i}(\mu)\mu_{i},\sum_{i=0}^{1}\beta_{i}(\mu)(\frac{1}{\mu})_{i}) & PA(\sum_{i=0}^{1}\gamma_{i}(\mu)\mu_{i}) - Z(\cdot)C \\
+      \star                                                                                   & -\sum_{i=0}^{1}\beta_{i}(\mu)(\frac{1}{\mu})_{i}P
+    \end{bmatrix},
+  \end{equation}
+  \begin{equation}
+    V \preceq \begin{bmatrix}
+      \sum_{i=0}^{1}\gamma_{i}(\mu)\cdot\sum_{i=0}^{1}\beta_{i}(\mu)(\frac{1}{\mu})_{i}\cdot{}M_{i,j} & P\sum_{i=0}^{1}\gamma_{i}(\mu)A_{i} - Z(\cdot)C   \\
+      \star                                                                                           & -\sum_{i=0}^{1}\beta_{i}(\mu)(\frac{1}{\mu})_{i}P
+    \end{bmatrix},
+  \end{equation}
+\end{slide}
+
+\begin{slide}{LMI Recapitulation}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+      \begin{align}
+        \hat{x}^{\Delta} & = A(\mu)\hat{x} + B(\mu)u - L(\mu)(y - C\hat{x}),                                                                                                         \\
+        L(\mu)           & = \sum_{i=0}^{3}\alpha_{i}(\mu)L_{i},                                                                                                                     \\
+        \alpha_{0}(\mu)  & = \textcolor{frenchblue}{\frac{\bar{\mu}^{-1}-\mu^{-1}}{\bar{\mu}^{-1}-\ubar{\mu}^{-1}}}  \textcolor{flame}{\frac{\bar{\mu}-\mu}{\bar{\mu}-\ubar{\mu}}},  \\
+        \alpha_{1}(\mu)  & = \textcolor{frenchblue}{\frac{\mu^{-1}-\ubar{\mu}^{-1}}{\bar{\mu}^{-1}-\ubar{\mu}^{-1}}} \textcolor{flame}{\frac{\bar{\mu}-\mu}{\bar{\mu}-\ubar{\mu}}},  \\
+        \alpha_{2}(\mu)  & = \textcolor{frenchblue}{\frac{\bar{\mu}^{-1}-\mu^{-1}}{\bar{\mu}^{-1}-\ubar{\mu}^{-1}}}  \textcolor{flame}{\frac{\mu-\ubar{\mu}}{\bar{\mu}-\ubar{\mu}}}, \\
+        \alpha_{3}(\mu)  & = \textcolor{frenchblue}{\frac{\mu^{-1}-\ubar{\mu}^{-1}}{\bar{\mu}^{-1}-\ubar{\mu}^{-1}}} \textcolor{flame}{\frac{\mu-\ubar{\mu}}{\bar{\mu}-\ubar{\mu}}},
+      \end{align}
+    \end{column}%
+    \hfill%
+    \begin{column}{0.55\textwidth}
+      \begin{align}
+                 & \begin{bmatrix}
+                     M(\cubar{\mu},0) & PA(\cubar{\mu}) - Z_{0}C \\
+                     \star            & -\frac{1}{\cubar{\mu}}P
+                   \end{bmatrix} \prec{} 0,  \\
+                 & \begin{bmatrix}
+                     M(\cbar{\mu},1) & PA(\cbar{\mu}) - Z_{1}C \\
+                     \star           & -\frac{1}{\cubar{\mu}}P
+                   \end{bmatrix} \prec{} 0,    \\
+                 & \begin{bmatrix}
+                     M(\cubar{\mu},2) & PA(\cubar{\mu}) - Z_{2}C \\
+                     \star            & -\frac{1}{\cbar{\mu}}P
+                   \end{bmatrix} \prec{} 0, \\
+                 & \begin{bmatrix}
+                     M(\cbar{\mu},3) & PA(\cbar{\mu}) - Z_{3}C \\
+                     \star           & -\frac{1}{\cbar{\mu}}P
+                   \end{bmatrix} \prec{} 0,   \\
+        M(\mu,i) & = PA(\mu) + A(\mu)\tr{}P - Z_{i}C - C\tr{}Z_{i}\tr,      \\
+        L_{i}    & = P^{-1}Z_{i}.
+      \end{align}
     \end{column}%
   \end{columns}
 \end{slide}

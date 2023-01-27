@@ -1,101 +1,113 @@
 % !TeX root = document.tex
 % !TeX encoding = UTF-8 Unicode
 
-\section{Introduction}%
-\label{sec:introduction}
+\section{Zero-Dynamics Attack}%
+\label{sec:zda}
 
-\subsection{False Data Injection}%
-\label{subsec:fdi}
+\subsection{Introduction}%
+\label{subsec:ts-introduction}
 
-\begin{slide}{False Data Injection}
+\begin{slide}{Zero-Dynamics Attack}
   \begin{columns}[c]
     \begin{column}{0.48\textwidth}
-      \begin{itemize}
-        \item \cmark{}~\textbf{Static False Data Injection}: the attacker
-              changes the sensor reading sent, replacing it statically.
-        \item \xmark{}~\textbf{Dynamic False Data Injection}: the attacker
-              changes the sensor reading dynamically, slowly changing it so
-              residuals change slowly.
-      \end{itemize}
+      The attacker changes the control signal in a specific direction, taking
+      advantage of the system's transmission zeros to change the system's states
+      without affecting the system's output.
+      \includegraphics[width=\linewidth]{ct-system}
     \end{column}%
     \hfill%
     \begin{column}{0.48\textwidth}
       \begin{align}
-        \tilde{x}_{j} & = x_{i},            \\
-        \tilde{x}_{j} & = x_{j}+\delta,     \\
-        \tilde{x}_{j} & = x_{j}\cdot\alpha,
+        \dot{x}       & = Ax + Bu                                       \\
+        y             & = Cx + Du                                       \\
+        \nonumber                                                       \\
+        P(s)          & = \begin{bmatrix}
+                            sI-A & -B \\
+                            C    & D
+                          \end{bmatrix},                                \\
+        P(s_{0})z_{0} & = 0.                                            \\
+        z_{0}         & = \begin{bmatrix} x_{0} \\ a_{0} \end{bmatrix}, \\
+        a(t)          & = a_{0}e^{s_{0}t},                              \\
+        \tilde{u}(t)  & =u(t) + a(t).
       \end{align}
     \end{column}%
   \end{columns}
 \end{slide}
 
-\subsection{Functional Observer}%
-\label{subsec:functional-observer}
+\subsection{Bibliography Review}%
+\label{subsec:literature}
 
-\begin{slide}{Functional Observer}
+\begin{slide}{Current Literature Solutions}
   \begin{columns}[c]
     \begin{column}{0.48\textwidth}
+      Current detection schemes in the literature:\\~\\
       \begin{itemize}
-        \item \(y(t)\) are the measured outputs.
-        \item \(z(t)\) are the states we wish to estimate.
-        \item The observer has a reduced order dynamics system which is
-              equivalent to the original one.
-        \item Problem 1: how to find a \(w(t)\) that correctly estimates
-              \(z(t)\).
-        \item Problem 2: how to find the observer's matrices \(N,J,H\) and
-              \(E\).
+        \item Generalized Zero-Order Holders \\
+              \textcolor{gray}{\textcite{kim.ryu.ea:zero-dynamics,shim.back.ea:zero-dynamics}}
+        \item Modified system models \\
+              \textcolor{gray}{\textcite{baniamerian.khorasani.ea:monitoring}}
+        \item Topology change \\
+              \textcolor{gray}{\textcite{mao.jafarnejadsani.ea:novel}}
       \end{itemize}
     \end{column}%
     \hfill%
     \begin{column}{0.48\textwidth}
-      \begin{align}
-        \begin{split}
-          \dot{x}(t) & = Ax(t) + Bu(t) + Lf(t), \\
-          y(t)       & = Cx(t),                 \\
-          z(t)       & = Fx(t),
-        \end{split} \\\nonumber\\
-        \begin{split}
-          \dot{w}(t) & = Nw(t) + Jy(t) + Hu(t), \\
-          \hat{z}(t) & = w(t) + Ey(t).
-        \end{split}
-      \end{align}
-    \end{column}%
+      \begin{figure}[ht!]
+        \centering
+        \resizebox{0.6\linewidth}{!}{%
+          \begin{tikzpicture}[node distance=1cm,block/.style={align=center,draw,shape=rectangle,very thick,minimum height=2em, minimum width=3em},>=stealth]
+            \node (C) [block]                             {Controller};
+            \node (G) [block,above=1.5cm of C]            {System};
+            \node (H) [block,below=of C]                  {Time-Scale Observer};
+            \node (u) [above left=0.5cm and 1cm of C]     {\(u(t)\)};
+            \node (y) [above right=0.5cm and 1cm of C]    {\(y(t)\)};
+            \node     [draw,rectangle,dashed,fit=(u) (y)] {Network};
+
+            \draw [->,thick] (C) -| (u) |- (G);
+            \draw [->,thick] (G) -| (y) |- (C);
+            \draw [->,thick] (u) |- (H);
+            \draw [->,thick] (y) |- (H);
+          \end{tikzpicture}%
+        }
+        \caption{Conventional Observer's block diagram}%
+      \end{figure}    \end{column}%
   \end{columns}
 \end{slide}
 
-\begin{slide}{Observability}
+\begin{slide}{Current Literature Solutions}
   \begin{columns}[c]
     \begin{column}{0.48\textwidth}
+      Current detection schemes in the literature:\\~\\
       \begin{itemize}
-        \item All desired states \(z(t)\) must be observable from the outputs
-              \(y(t)\).
-        \item The observability of \((A,C,F)\) cannot be greater than that of
-              \((A,C)\).
-        \item There must be a path from every output \(y(t)\) to every output
-              \(z(t)\) in the dynamics graph.
+        \item Generalized Zero-Order Holders \\
+              \textcolor{gray}{\textcite{kim.ryu.ea:zero-dynamics,shim.back.ea:zero-dynamics}}
+        \item Modified system models \\
+              \textcolor{gray}{\textcite{baniamerian.khorasani.ea:monitoring}}
+        \item Topology change \\
+              \textcolor{gray}{\textcite{mao.jafarnejadsani.ea:novel}}
       \end{itemize}
     \end{column}%
     \hfill%
     \begin{column}{0.48\textwidth}
-      \begin{equation}
-        rank
-        \begin{bmatrix}
-          C \\ CA \\ F \\ FA
-        \end{bmatrix}
-        = rank
-        \begin{bmatrix}
-          C \\ CA \\ F
-        \end{bmatrix}.
-      \end{equation}
+      \begin{figure}[ht!]
+        \centering
+        \resizebox{0.6\linewidth}{!}{%
+          \begin{tikzpicture}[node distance=1cm,block/.style={align=center,draw,shape=rectangle,very thick,minimum height=2em, minimum width=3em},>=stealth]
+            \node (C) [block]                             {Controller};
+            \node (G) [block,above=1.5cm of C]            {System};
+            \node (H) [block,above=of G]                  {Time-Scale Observer};
+            \node (u) [above left=0.5cm and 1cm of C]     {\(u(t)\)};
+            \node (y) [above right=0.5cm and 1cm of C]    {\(y(t)\)};
+            \node     [draw,rectangle,dashed,fit=(u) (y)] {Network};
+
+            \draw [->,thick] (C) -| (u) |- (G);
+            \draw [->,thick] (G) -| (y) |- (C);
+            \draw [->,thick] (u) |- (H);
+            \draw [->,thick] (y) |- (H);
+          \end{tikzpicture}%
+        }
+        \caption{Proposed Observer's block diagram}%
+      \end{figure}
     \end{column}%
   \end{columns}
-\end{slide}
-
-\begin{slide}{Path Finder Algorithm}
-  \begin{figure}[ht!]
-    \centering
-    \includegraphics[width=\textheight]{graph-puma}
-    \caption{Puma 560 dynamic's graph representation.}%
-    \label{fig:puma-graph}
-  \end{figure}
 \end{slide}
