@@ -135,7 +135,7 @@
 }
 \newcommand\getauthor[1]{\csuse{author#1}}
 \newcommand\getauthoremail[1]{\csuse{authoremail#1}}
-\newcommand\getauthors{\foreach \i in {1,...,\theauthors}{\getauthor{\i}\\\small{(\getauthoremail{\i})}\ifnum\i=\theauthors\@\else\\\ \fi}}
+\newcommand\getauthors{\foreach \i in {1,...,\theauthors}{\getauthor{\i}\\\small{\getauthoremail{\i}}\ifnum\i=\theauthors\@\else\\\ \fi}}
 \newcommand\getauthornames{\foreach \i in {1,...,\theauthors}{\getauthor{\i}\ifnum\i=\theauthors\@\else,\ \fi}}
 
 \newcommand\setorientador[1]{\csdef{getorientador}{#1}}
@@ -239,8 +239,7 @@
       \vfill
 
       \tiny{
-        Supervisor: \getorientador{}\\
-        Cosupervisor: \getcoorientadores{}
+        Supervisors:\\~\\\getorientador{}\\\getcoorientadores{}
       }
 
       \vfill
