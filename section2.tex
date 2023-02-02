@@ -40,26 +40,34 @@
       \begin{equation}
         f(\sigma(t)) = f(t) + \mu(t)f^{\Delta}(t).
       \end{equation}
+      %
+      \begin{equation}
+        f^{\Delta}(t) = \lim_{x\rightarrow{}\mu(t)}\frac{f(t+x)-f(t)}{x}.
+      \end{equation}
     \end{column}%
   \end{columns}
 \end{slide}
 
 \begin{slide}{Time-Scale System}
   \begin{columns}[c]
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.38\textwidth}
       \begin{itemize}
         \item Allows to evolve the system with arbitrary sampling-times.
         \item Has it own stability criteria based on the Hilger's circle.
       \end{itemize}
     \end{column}%
     \hfill%
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.58\textwidth}
       \begin{align}
-        x^{\Delta}(t) & = A(\mu(t))x(t) + B(\mu(t))u(t),                                          \\
-        y(t)          & = Cx(t) + Du(t),                                                          \\
-        \phantom{1}   & \phantom{1}                                 \nonumber                     \\
-        A(\mu(t))     & = \frac{e^{\mathcal{A}\mu(t)}-I}{\mu(t)},                                 \\
-        B(\mu(t))     & = \int_{0}^{\mu(t)}\frac{e^{(\mu(t)-s)\mathcal{A}}}{\mu(t)}\mathcal{B}ds.
+        \textrm{Continuous-Time System} & \nonumber                                                                 \\
+        \dot{x}(t)                      & = \mathcal{A}x(t) + \mathcal{B}u(t),                                      \\
+        y(t)                            & = Cx(t) + Du(t),                                                          \\
+        \textrm{Time-Scale System}      & \nonumber                                                                 \\
+        x^{\Delta}(t)                   & = A(\mu(t))x(t) + B(\mu(t))u(t),                                          \\
+        y(t)                            & = Cx(t) + Du(t),                                                          \\
+        \phantom{1}                     & \phantom{1}                                 \nonumber                     \\
+        A(\mu(t))                       & = \frac{e^{\mathcal{A}\mu(t)}-I}{\mu(t)},                                 \\
+        B(\mu(t))                       & = \int_{0}^{\mu(t)}\frac{e^{(\mu(t)-s)\mathcal{A}}}{\mu(t)}\mathcal{B}ds.
       \end{align}
     \end{column}%
   \end{columns}

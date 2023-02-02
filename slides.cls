@@ -29,18 +29,15 @@
 
 \if@langfr
   \RequirePackage[output-decimal-marker=,,
-    input-complex-root=i,
     output-complex-root=i,
     complex-root-position=after-number]{siunitx} % SI units
 \else
   \if@langen
     \RequirePackage[output-decimal-marker=.,
-      input-complex-root=i,
       output-complex-root=i,
       complex-root-position=after-number]{siunitx} % SI units
   \else
     \RequirePackage[output-decimal-marker=,,
-      input-complex-root=i,
       output-complex-root=i,
       complex-root-position=after-number]{siunitx} % SI units
   \fi

@@ -20,7 +20,7 @@
       \begin{align}
         \dot{x}       & = Ax + Bu                                       \\
         y             & = Cx + Du                                       \\
-        \nonumber                                                       \\
+        \textrm{Rosenbrock's Matrix:} \nonumber                         \\
         P(s)          & = \begin{bmatrix}
                             sI-A & -B \\
                             C    & D
@@ -58,7 +58,7 @@
           \begin{tikzpicture}[node distance=1cm,block/.style={align=center,draw,shape=rectangle,very thick,minimum height=2em, minimum width=3em},>=stealth]
             \node (C) [block]                             {Controller};
             \node (G) [block,above=1.5cm of C]            {System};
-            \node (H) [block,below=of C]                  {Time-Scale Observer};
+            \node (H) [block,below=of C]                  {Observer/Detector};
             \node (u) [above left=0.5cm and 1cm of C]     {\(u(t)\)};
             \node (y) [above right=0.5cm and 1cm of C]    {\(y(t)\)};
             \node     [draw,rectangle,dashed,fit=(u) (y)] {Network};
